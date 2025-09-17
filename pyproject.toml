@@ -7,7 +7,7 @@ pythonpath = "src"
 [project]
 name = "my-fastapi-weasyprint-app"
 version = "0.1.0"
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 dependencies = [
   "fastapi[standard]==0.112.0",
   "weasyprint==62.3",
