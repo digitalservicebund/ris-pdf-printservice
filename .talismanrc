@@ -1,0 +1,7 @@
+threshold: medium
+version: "1.0"
+scopeconfig:
+  - scope: node
+fileignoreconfig:
+  - filename: uv.lock
+    checksum: f8a794419d5d8fef2575e45a339cb7f84fe2888267ba053e61504ef6e2227152
