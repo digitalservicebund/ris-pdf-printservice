@@ -25,3 +25,13 @@ Run tests:
 ```bash
 uv run pytest
 ```
+
+Run linter
+```bash
+uv run flake8 ./src
+```
+
+Fix linting errors
+```bash
+uv run black ./src
+```

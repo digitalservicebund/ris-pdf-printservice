@@ -40,7 +40,7 @@ app = FastAPI()
 
 @app.get("/")
 def home():
-    logger.info(f"request / endpoint!")
+    logger.info("request / endpoint!")
     return {"status": True}
 
 
