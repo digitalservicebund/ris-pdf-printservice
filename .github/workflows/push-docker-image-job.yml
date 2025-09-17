@@ -1,0 +1,49 @@
+name: Push Docker image
+
+on:
+  workflow_call:
+    inputs:
+      container-registry:
+        required: true
+        type: string
+      container-image-name:
+        required: true
+        type: string
+      container-image-version:
+        required: true
+        type: string
+
+jobs:
+  push-docker-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # This is used to complete the identity challenge with sigstore/fulcio..
+      packages: write
+    steps:
+      - uses: actions/cache@v4
+        with:
+          path: /tmp/images
+          key: docker-images-cache-${{ github.run_id }}
+          restore-keys: docker-images-cache-${{ github.run_id }}
+      - name: load image
+        shell: bash
+        run: docker load -i /tmp/images/fullstack-image.tar
+      - name: Log into container registry
+        uses: docker/login-action@5b7b28b1cc417bbd34cd8c225a957c9ce9adf7f2
+        with:
+          registry: ${{ inputs.container-registry }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish container image
+        run: docker push ${{ inputs.container-registry }}/${{ inputs.container-image-name }}:${{ inputs.container-image-version }}
+      - name: Install cosign
+        uses: sigstore/cosign-installer@d7543c93d881b35a8faa02e8e3605f69b7a1ce62
+      - name: Sign the published Docker image
+        run: cosign sign --yes ${{ inputs.container-registry }}/${{ inputs.container-image-name }}:${{ inputs.container-image-version }}
+      - name: Download cosign vulnerability scan record
+        uses: actions/download-artifact@v5
+        with:
+          name: "vuln.json"
+      - name: Attest vulnerability scan
+        run: cosign attest --yes --replace --predicate vuln.json --type vuln ${{ inputs.container-registry }}/${{ inputs.container-image-name }}:${{ inputs.container-image-version }}

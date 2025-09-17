@@ -1,0 +1,82 @@
+name: Create Docker image
+
+on:
+  workflow_call:
+    inputs:
+      container-registry:
+        required: true
+        type: string
+      container-image-name:
+        required: true
+        type: string
+      container-image-version:
+        required: true
+        type: string
+
+jobs:
+  create-docker-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: "true"
+      - name: Build docker image
+        run: docker build --tag ${{ inputs.container-registry }}/${{ inputs.container-image-name }}:${{ inputs.container-image-version }} -f Dockerfile .
+      - name: Run Trivy vulnerability image scanner
+        uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8
+        env:
+          ACTIONS_RUNTIME_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TRIVY_DB_REPOSITORY: ghcr.io/aquasecurity/trivy-db,public.ecr.aws/aquasecurity/trivy-db
+        with:
+          image-ref: ${{ inputs.container-registry }}/${{ inputs.container-image-name }}:${{ inputs.container-image-version }}
+          format: "sarif"
+          trivy-config: "./trivy.yaml"
+          output: "trivy-results.sarif"
+      - name: Check trivy results
+        run: |
+          if grep -qE 'HIGH|CRITICAL' trivy-results.sarif; then
+            echo "Vulnerabilities found"
+            exit 1
+          else
+            echo "No significant vulnerabilities found"
+            exit 0
+          fi
+      - name: Upload trivy-results.sarif as an artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ always () }}
+        with:
+          name: trivy-results.sarif
+          path: trivy-results.sarif
+      - name: Upload Trivy image scan results to GitHub Security tab (on 'main' only)
+        uses: github/codeql-action/upload-sarif@v3
+        if: ${{ always() && github.ref == 'refs/heads/main' }} # Bypass non-zero exit code..
+        with:
+          sarif_file: "trivy-results.sarif"
+          category: trivy-image-scan
+      - name: Generate cosign vulnerability scan record
+        uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8
+        env:
+          ACTIONS_RUNTIME_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TRIVY_DB_REPOSITORY: ghcr.io/aquasecurity/trivy-db,public.ecr.aws/aquasecurity/trivy-db
+        with:
+          image-ref: ${{ inputs.container-registry }}/${{ inputs.container-image-name }}:${{ inputs.container-image-version }}
+          format: "cosign-vuln"
+          output: "vuln.json"
+      - name: Upload cosign vulnerability scan record
+        uses: actions/upload-artifact@v4
+        with:
+          name: "vuln.json"
+          path: "vuln.json"
+          if-no-files-found: error
+      - name: Save image
+        run: |
+          mkdir /tmp/images
+          docker save -o /tmp/images/fullstack-image.tar ${{ inputs.container-registry }}/${{ inputs.container-image-name }}:${{ inputs.container-image-version }}
+      - uses: actions/cache@v4
+        with:
+          path: /tmp/images
+          key: docker-images-cache-${{ github.run_id }}
+          restore-keys: docker-images-cache-${{ github.run_id }}
