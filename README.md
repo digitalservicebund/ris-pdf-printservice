@@ -1,6 +1,7 @@
 # Pdf print service
-## Prerequisites
+Rest API service that converts HTML and CSS into high‑quality PDFs.
 
+## Prerequisites
 To build and run the application, you'll need:
 
 - Docker, for infrastructure or running a containerized version of the entire application locally
@@ -14,6 +15,7 @@ If you would like to make changes to the application, you'll also need:
 - [`docker`](https://www.docker.com/), for running containers- 
 - [`python`](https://www.python.org/) as runtime
 - [`pango stack`](https://www.gtk.org/docs/architecture/pango) for pdf printing
+- [`uv`](https://github.com/astral-sh/uv) Python package and project manager
 
 
 If you use [Homebrew](https://brew.sh/), you can install all of them like this:
@@ -24,6 +26,14 @@ brew install python
 brew install pango cairo harfbuzz fontconfig freetype pkg-config
 brew install --cask docker # or `brew install docker` if you don't want the desktop app
 ```
+Install uv by running:
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+or
+```bash
+brew install uv
+```
 
 Once you installed the prerequisites, make sure to initialize Git hooks. This will ensure any code you commit follows our coding standards, is properly formatted, and has a commit message adhering to our conventions:
 
@@ -31,16 +41,7 @@ Once you installed the prerequisites, make sure to initialize Git hooks. This wi
 lefthook install
 ```
 
-## Setup
-We use uv as a dependency manager
-Install by running:
-```bash
-brew install uv
-```
-or
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
+## Developing
 
 Download dependencies:
 ```bash
@@ -67,7 +68,7 @@ Run linter
 uv run flake8 ./src
 ```
 
-Fix linting errors
+Run formatter
 ```bash
 uv run black ./src
 ```
