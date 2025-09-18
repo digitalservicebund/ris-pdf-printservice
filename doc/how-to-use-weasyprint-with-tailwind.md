@@ -59,12 +59,12 @@ individually:
 + @import "tailwindcss/utilities.css";
 ```
 
-## Tailwind removes `@page` rules
+## Tailwind removes `@page :nth(...)` rules
 
-When tailwind is used with the optimization logic activated (it's the case by default) it removes all `@page` rules.
+When tailwind is used with the optimization logic activated (it's the case by default) it removes `@page :nth(...)` rules.
 The optimization must therefore be deactivated.
 
-Example for deactivating optimization for using tailwind with postcss:
+Example for deactivating optimisation for using tailwind with postcss:
 ```ts
 export default {
   plugins: {
