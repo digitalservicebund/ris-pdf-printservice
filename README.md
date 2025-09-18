@@ -1,4 +1,35 @@
 # Pdf print service
+## Prerequisites
+
+To build and run the application, you'll need:
+
+- Docker, for infrastructure or running a containerized version of the entire application locally
+- A Python3 Installation
+
+If you would like to make changes to the application, you'll also need:
+
+- [`talisman`](https://thoughtworks.github.io/talisman/), for preventing accidentially committing sensitive data
+- [`lefthook`](https://lefthook.dev/), for running Git hooks
+- [`gh`](https://cli.github.com/), for checking the pipeline status before pushing
+- [`docker`](https://www.docker.com/), for running containers- 
+- [`python`](https://www.python.org/) as runtime
+- [`pango stack`](https://www.gtk.org/docs/architecture/pango) for pdf printing
+
+
+If you use [Homebrew](https://brew.sh/), you can install all of them like this:
+
+```sh
+brew install talisman lefthook gh
+brew install python
+brew install pango cairo harfbuzz fontconfig freetype pkg-config
+brew install --cask docker # or `brew install docker` if you don't want the desktop app
+```
+
+Once you installed the prerequisites, make sure to initialize Git hooks. This will ensure any code you commit follows our coding standards, is properly formatted, and has a commit message adhering to our conventions:
+
+```sh
+lefthook install
+```
 
 ## Setup
 We use uv as a dependency manager
