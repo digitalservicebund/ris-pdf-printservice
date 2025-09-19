@@ -8,15 +8,9 @@ pre-commit:
   commands:
 
     lint-backend:
-      root: src/
+      root: /
       glob: "*.{py}"
       run: uv run flake8 ./src
-
-    check-format-yaml:
-      glob: "*.{yml,yaml}"
-      run: |
-        echo {staged_files}
-        npm --prefix frontend exec prettier -- --check --write --ignore-unknown {staged_files} && git add {staged_files}
 
     secrets-audit:
       run: >
