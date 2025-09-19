@@ -59,6 +59,20 @@ jobs:
       container-image-version: ${{ github.event.pull_request.head.sha || github.sha }}
     secrets: inherit
 
+  # ######################
+  # Deploy new versions to staging
+  # ######################
+
+  deploy-staging-job:
+    if: ${{ github.ref == 'refs/heads/main' && needs.check-auto-deploy.outputs.should-auto-deploy == 'true' }}
+    needs:
+      - backend-jobs
+      - push-docker-image-job
+    permissions:
+      id-token: write
+    uses: ./.github/workflows/deploy-staging-job.yml
+    secrets: inherit
+
   talisman-check:
     runs-on: ubuntu-latest
     # Running on main only https://digitalservicebund.slack.com/archives/C046VD44ZEH/p1706516240974409
