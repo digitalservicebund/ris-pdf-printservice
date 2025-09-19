@@ -42,6 +42,8 @@ RUN apk update && apk add --no-cache --update-cache \
     cairo-gobject \
     harfbuzz
 
+RUN mkdir -p /tmp && chmod 1777 /tmp
+
 USER nonroot
 
 COPY --from=build /app/.venv /app/.venv
