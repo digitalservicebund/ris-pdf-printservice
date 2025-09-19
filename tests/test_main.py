@@ -11,7 +11,7 @@ client = TestClient(main.app)
 
 
 def test_home_ok():
-    resp = client.get("/")
+    resp = client.get("/health")
     assert resp.status_code == 200
     assert resp.json() == {"status": True}
 
