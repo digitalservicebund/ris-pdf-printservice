@@ -38,7 +38,7 @@ logger = logging.getLogger(__name__)
 app = FastAPI()
 
 
-@app.get("/")
+@app.get("/health")
 def home():
     logger.info("request / endpoint!")
     return {"status": True}
