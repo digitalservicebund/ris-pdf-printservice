@@ -5,3 +5,5 @@ scopeconfig:
 fileignoreconfig:
   - filename: uv.lock
     checksum: f8a794419d5d8fef2575e45a339cb7f84fe2888267ba053e61504ef6e2227152
+  - filename: .github/workflows/deploy-staging-job.yml
+    checksum: 4d9dd73ad6fc238280d4353da72ee86110c80cbe7b64124bb6791ac529a9c4c7
