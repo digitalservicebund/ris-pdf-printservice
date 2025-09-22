@@ -56,6 +56,6 @@ def generate_pdf(html: UploadFile, css: UploadFile):
     css = CSS(css.file, font_config=font_config)
 
     # See https://doc.courtbouillon.org/weasyprint/stable/api_reference.html#weasyprint.HTML.write_pdf
-    pdf = html.write_pdf(stylesheets=[default_css, css], font_config=font_config)
+    pdf = html.write_pdf(stylesheets=[default_css, css], font_config=font_config, pdf_variant="pdf/a-2u", pdf_version="1.7", srgb=True, pdf_tags=True)
     headers = {"Content-Disposition": "attachment; filename='{}'".format(body.filename)}
     return Response(pdf, headers=headers, media_type="application/pdf")
