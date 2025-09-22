@@ -1,9 +1,13 @@
+from io import BytesIO
+
 from fastapi import FastAPI, UploadFile, Response
 from pydantic import BaseModel
 from weasyprint import HTML, CSS
 from styles import default_css, font_config
-import logging
 import logging.config
+import pikepdf
+import tempfile
+from fastapi.responses import FileResponse
 
 LOGGING_CONFIG = {
     "version": 1,
@@ -49,7 +53,6 @@ class PdfBody(BaseModel):
     css: str = ""
     filename: str = "download.pdf"
 
-
 @app.post("/pdf")
 def generate_pdf(html: UploadFile, css: UploadFile):
     html = HTML(html.file)
@@ -57,5 +60,12 @@ def generate_pdf(html: UploadFile, css: UploadFile):
 
     # See https://doc.courtbouillon.org/weasyprint/stable/api_reference.html#weasyprint.HTML.write_pdf
     pdf = html.write_pdf(stylesheets=[default_css, css], font_config=font_config, pdf_variant="pdf/a-2u", pdf_version="1.7", srgb=True, pdf_tags=True)
-    headers = {"Content-Disposition": "attachment; filename='{}'".format(body.filename)}
-    return Response(pdf, headers=headers, media_type="application/pdf")
+
+    ppdf = pikepdf.open(BytesIO(pdf))
+    with ppdf.open_metadata() as meta:
+        meta['pdfaid:conformance'] = "A"
+
+    _, path = tempfile.mkstemp()
+    ppdf.save(path)
+    return FileResponse(path)
+    # todo: cleanup temp file
