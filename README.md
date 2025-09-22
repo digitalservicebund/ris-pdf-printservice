@@ -55,7 +55,7 @@ uv run python -m fastapi run src/main.py --host 0.0.0.0 --port 8080
 
 Test manually:
 ```bash
-curl -X POST http://localhost:8080/pdf -H "Content-Type: application/json" -d '{"html":"<h1>Hello</h1>","css":"h1 { color: red }","filename":"hello.pdf"}' -o hello.pdf
+curl -X POST http://localhost:8080/pdf  -F "html=@./sbgg.html" -F "css=@./style.css" -o sbgg.pdf
 ```
 
 Run tests: 
