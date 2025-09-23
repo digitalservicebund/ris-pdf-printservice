@@ -1,4 +1,5 @@
 from io import BytesIO
+from os import remove
 
 from fastapi import FastAPI, UploadFile
 from weasyprint import HTML, CSS
@@ -58,10 +59,20 @@ def generate_pdf(html: UploadFile, css: UploadFile, attachments: list[UploadFile
 
     with ppdf.open_metadata() as meta:
         meta['pdfaid:conformance'] = "A"
+        # We would need to also embedd the definition of the pdfuaid namespace into the pdf to still be PDF/A-2a compliant, thats not that simple so we do not do that at the moment
+        # meta['pdfuaid:part'] = "1"
 
     if attachments:
         for attachment in attachments:
             attachment_pikepdf = pikepdf.open(attachment.file)
+
+            with attachment_pikepdf.open_metadata() as metadata:
+                if "A" not in metadata.pdfa_status:
+                    logger.info("Attachment is not PDF/A compliant, removing metadata from final PDF.")
+                    with ppdf.open_metadata() as meta:
+                        del meta['pdfaid:conformance']
+                        del meta['pdfaid:version']
+
             ppdf.pages.extend(attachment_pikepdf.pages)
 
     _, path = tempfile.mkstemp()
