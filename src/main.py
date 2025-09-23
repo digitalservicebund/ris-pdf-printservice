@@ -67,5 +67,5 @@ def generate_pdf(html: UploadFile, css: UploadFile):
 
     _, path = tempfile.mkstemp()
     ppdf.save(path)
-    return FileResponse(path)
+    return FileResponse(path, media_type="application/pdf", filename="download.pdf", content_disposition_type="attachment")
     # todo: cleanup temp file
