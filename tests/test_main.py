@@ -58,4 +58,6 @@ def test_pdf_has_attachments():
 
     # check some metadata
     pdf = pikepdf.Pdf.open(io.BytesIO(resp.content))
+    metadata = pdf.open_metadata()
+    assert metadata.pdfa_status == "" # not PDF/A-2A compliant as the attachment is only PDF/A-2u compliant.
     assert len(pdf.pages) == 21 # 1 for the generated pdf, and 10 for both of the attachments

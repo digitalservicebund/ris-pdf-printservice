@@ -70,8 +70,10 @@ def generate_pdf(html: UploadFile, css: UploadFile, attachments: list[UploadFile
                 if "A" not in metadata.pdfa_status:
                     logger.info("Attachment is not PDF/A compliant, removing metadata from final PDF.")
                     with ppdf.open_metadata() as meta:
-                        del meta['pdfaid:conformance']
-                        del meta['pdfaid:version']
+                        if 'pdfaid:conformance' in meta:
+                            del meta['pdfaid:conformance']
+                        if 'pdfaid:part' in meta:
+                            del meta['pdfaid:part']
 
             ppdf.pages.extend(attachment_pikepdf.pages)
 
