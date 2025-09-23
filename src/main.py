@@ -1,7 +1,6 @@
 from io import BytesIO
 
-from fastapi import FastAPI, UploadFile, Response
-from pydantic import BaseModel
+from fastapi import FastAPI, UploadFile
 from weasyprint import HTML, CSS
 from styles import default_css, font_config
 import logging.config
@@ -47,14 +46,8 @@ def home():
     logger.info("request / endpoint!")
     return {"status": True}
 
-
-class PdfBody(BaseModel):
-    html: str
-    css: str = ""
-    filename: str = "download.pdf"
-
 @app.post("/pdf")
-def generate_pdf(html: UploadFile, css: UploadFile):
+def generate_pdf(html: UploadFile, css: UploadFile, attachments: list[UploadFile] | None = None):
     html = HTML(html.file)
     css = CSS(css.file, font_config=font_config)
 
@@ -62,8 +55,14 @@ def generate_pdf(html: UploadFile, css: UploadFile):
     pdf = html.write_pdf(stylesheets=[default_css, css], font_config=font_config, pdf_variant="pdf/a-2u", pdf_version="1.7", srgb=True, pdf_tags=True)
 
     ppdf = pikepdf.open(BytesIO(pdf))
+
     with ppdf.open_metadata() as meta:
         meta['pdfaid:conformance'] = "A"
+
+    if attachments:
+        for attachment in attachments:
+            attachment_pikepdf = pikepdf.open(attachment.file)
+            ppdf.pages.extend(attachment_pikepdf.pages)
 
     _, path = tempfile.mkstemp()
     ppdf.save(path)
