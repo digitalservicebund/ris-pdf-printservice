@@ -1,5 +1,6 @@
 import io
 import builtins
+import os
 
 import pikepdf
 import pytest
@@ -42,7 +43,7 @@ def test_pdf_is_created():
     assert len(pdf.pages) == 1
 
 def test_pdf_has_attachments():
-    with open("./fixtures/attachment.pdf", "rb") as attachment:
+    with open(os.path.dirname(__file__) + "/fixtures/attachment.pdf", "rb") as attachment:
         resp = client.post("/pdf", files=[
             ("html", ("law.html", "<h1>Hello</h1>", "text/html")),
             ("css", ("style.css", "h1 { color: red }", "text/css")),
