@@ -1,5 +1,7 @@
 import io
 import builtins
+
+import pikepdf
 import pytest
 from fastapi.testclient import TestClient
 
@@ -29,3 +31,10 @@ def test_pdf_is_created():
 
     # Check the content looks like a pdf file in version 1.7
     assert resp.content.startswith(b"%PDF-1.7")
+
+    # check some metadata
+    pdf = pikepdf.Pdf.open(io.BytesIO(resp.content))
+    metadata = pdf.open_metadata()
+    assert metadata.pdfa_status == "2A"
+    assert pdf.pdf_version == "1.7"
+    assert len(pdf.pages) == 1
