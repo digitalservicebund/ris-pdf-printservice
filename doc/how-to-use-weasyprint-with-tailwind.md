@@ -6,7 +6,7 @@ This leads to some incompatibilities between weasyprint and tailwind.
 
 ## Weasyprint does not support some selectors
 
-Most notably simply compling the tailwind css to css creates some css rules that weasyprint ignores as they include
+Most notably simply compiling the tailwind css to css creates some css rules that weasyprint ignores as they include
 selectors weasyprint does not understand. This includes all selectors of which weasyprint doesn't understand a single 
 part of. This is especially problematic as it includes the `:host` pseudo-class, that is part of the selector for the
 block defining most css-variables.
