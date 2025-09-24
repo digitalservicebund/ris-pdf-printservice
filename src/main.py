@@ -8,6 +8,7 @@ import logging.config
 import pikepdf
 import tempfile
 from fastapi.responses import FileResponse
+from prometheus_fastapi_instrumentator import Instrumentator
 
 LOGGING_CONFIG = {
     "version": 1,
@@ -41,6 +42,11 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
+instrumentator = Instrumentator().instrument(app)
+
+@app.on_event("startup")
+async def _startup():
+    instrumentator.expose(app)
 
 @app.get("/health")
 def home():
