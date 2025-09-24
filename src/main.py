@@ -1,5 +1,5 @@
+import os
 from io import BytesIO
-from os import remove
 
 from fastapi import FastAPI, UploadFile
 from weasyprint import HTML, CSS
@@ -53,12 +53,26 @@ def home():
     logger.info("request / endpoint!")
     return {"status": True}
 
-@app.post("/pdf")
-def generate_pdf(html: UploadFile, css: UploadFile, attachments: list[UploadFile] | None = None):
-    html = HTML(html.file)
-    css = CSS(css.file, font_config=font_config)
+with open(os.path.join(os.path.dirname(__file__), "fallback.png"), "rb") as file:
+    fallback_image = file.read()
 
-    # See https://doc.courtbouillon.org/weasyprint/stable/api_reference.html#weasyprint.HTML.write_pdf
+@app.post("/pdf")
+def generate_pdf(html: UploadFile, css: UploadFile, attachments: list[UploadFile] | None = None, files: list[UploadFile] | None = None) -> FileResponse:
+    def url_fetcher(url: str) -> dict[str, str]:
+        for file in files:
+            if url.endswith(file.filename):
+                return {'file_obj': file.file, 'mime_type': file.content_type}
+        logger.info(f"File for {url} not provided, using fallback image.")
+        return { 'string': fallback_image, 'mime_type': 'image/png' }
+
+    html = HTML(
+        html.file,
+        url_fetcher=url_fetcher,
+        # we need to define a base url so the url_fetcher even tries to load relative paths
+        base_url="https://testphase.rechtsinformationen.bund.de/"
+    )
+    css = CSS(css.file, font_config=font_config, url_fetcher=url_fetcher)
+
     pdf = html.write_pdf(stylesheets=[default_css, css], font_config=font_config, pdf_variant="pdf/a-2u", pdf_version="1.7", srgb=True, pdf_tags=True)
 
     ppdf = pikepdf.open(BytesIO(pdf))
