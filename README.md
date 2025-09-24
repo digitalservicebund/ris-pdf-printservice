@@ -50,7 +50,7 @@ uv sync
 
 Start server: 
 ```bash
-uv run python -m fastapi run src/main.py --host 0.0.0.0 --port 8080
+uv run python -m fastapi dev src/main.py --host 0.0.0.0 --port 8080
 ```
 
 Test manually:
