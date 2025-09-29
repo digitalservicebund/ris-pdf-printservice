@@ -9,6 +9,7 @@ import logging.config
 import pikepdf
 import tempfile
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from prometheus_fastapi_instrumentator import Instrumentator
 
 LOGGING_CONFIG = {
@@ -50,6 +51,7 @@ app = FastAPI(
         "url": "https://github.com/digitalservicebund/ris-pdf-printservice/blob/main/LICENSE"
     },
 )
+app.mount("/.well-known", StaticFiles(directory="static/.well-known"), name=".well-known")
 
 instrumentator = Instrumentator().instrument(app)
 
