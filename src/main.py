@@ -1,7 +1,8 @@
 import os
 from io import BytesIO
+from typing import Annotated
 
-from fastapi import FastAPI, UploadFile
+from fastapi import FastAPI, UploadFile, File
 from weasyprint import HTML, CSS
 from styles import default_css, font_config
 import logging.config
@@ -40,7 +41,15 @@ logging.config.dictConfig(LOGGING_CONFIG)
 
 logger = logging.getLogger(__name__)
 
-app = FastAPI()
+app = FastAPI(
+    title="NeuRIS PDF Service",
+    description="Rest API service that converts HTML and CSS into high‑quality accessible PDFs.",
+    version="1.0.0",
+    license_info={
+        "name": "GPL-3.0",
+        "url": "https://github.com/digitalservicebund/ris-pdf-printservice/blob/main/LICENSE"
+    },
+)
 
 instrumentator = Instrumentator().instrument(app)
 
@@ -49,15 +58,20 @@ async def _startup():
     instrumentator.expose(app)
 
 @app.get("/health")
-def home():
+def health():
     logger.info("request / endpoint!")
     return {"status": True}
 
 with open(os.path.join(os.path.dirname(__file__), "fallback.png"), "rb") as file:
     fallback_image = file.read()
 
-@app.post("/pdf")
-def generate_pdf(html: UploadFile, css: UploadFile, attachments: list[UploadFile] | None = None, files: list[UploadFile] | None = None) -> FileResponse:
+@app.post("/pdf", response_class=FileResponse)
+def generate_pdf(
+        html: Annotated[UploadFile, File(description="The HTML that should be rendered")],
+        css: Annotated[UploadFile, File(description="The CSS that should be applied to the HTML for rendering it")],
+        attachments: Annotated[list[UploadFile], File(description="Additional PDF-files that should be added to the end of the created PDF-file. If these files are not PDF-A/2a compliant the created PDF-file will not be compliant either.") ] = None,
+        files: Annotated[list[UploadFile], File(description="Files references in the HTML that are needed for rendering. E.g. Images that are used in an <img>-tag. The filename must be the same as in the reference, the rest of the path is ignored.") ] = None
+) -> FileResponse:
     def url_fetcher(url: str) -> dict[str, str]:
         for file in files:
             if url.endswith(file.filename):

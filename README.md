@@ -72,3 +72,5 @@ Run formatter
 ```bash
 uv run black ./src
 ```
+
+While the application is running the OpenAPI docs are available under http://localhost:8080/docs
