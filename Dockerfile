@@ -29,7 +29,7 @@ ENV PATH="/root/.local/bin/:$PATH"
 RUN uv pip install --no-cache -r <(uv pip compile pyproject.toml)
 
 FROM cgr.dev/chainguard/wolfi-base AS runtime
-WORKDIR /app
+WORKDIR /src
 
 # Install the same system libs required at runtime
 RUN apk update && apk add --no-cache --update-cache \
@@ -46,11 +46,12 @@ RUN mkdir -p /tmp && chmod 1777 /tmp
 
 USER nonroot
 
-COPY --from=build /app/.venv /app/.venv
-ENV PATH="/app/.venv/bin:${PATH}"
+COPY --from=build /app/.venv /src/.venv
+ENV PATH="/src/.venv/bin:${PATH}"
 
-COPY ./src ./app
+COPY ./src ./src
+COPY ./static ./static
 
 EXPOSE 8080
 
-CMD ["python", "-m", "fastapi", "run", "app/main.py", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["python", "-m", "fastapi", "run", "src/main.py", "--host", "0.0.0.0", "--port", "8080"]
