@@ -8,6 +8,7 @@ pythonpath = "src"
 name = "my-fastapi-weasyprint-app"
 version = "0.1.0"
 requires-python = ">=3.13"
+license = "GPL-3.0"
 dependencies = [
   "black>=25.1.0",
   "fastapi[standard]==0.116.2",
@@ -25,4 +26,15 @@ build-backend = "setuptools.build_meta"
 [dependency-groups]
 dev = [
     "pytest>=8.4.2",
+    "licensecheck==2025.1.0"
+]
+
+[tool.licensecheck]
+ignore_packages = [
+    "mypy-extensions" # package is missing the license information but is licensed under MIT
+]
+ignore_licenses = [
+    "MPL-2.0", # we allow MPL-2.0
+    "GNU GENERAL PUBLIC LICENSE V2", # It's just not parsed correctly by licensecheck
+    "GNU LESSER GENERAL PUBLIC LICENSE V2" # It's just not parsed correctly by licensecheck
 ]
