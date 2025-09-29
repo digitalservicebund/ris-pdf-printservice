@@ -56,4 +56,4 @@ jobs:
         with:
           name: licence-reports
           retention-days: 3
-          path: license-report.csv
+          path: licence-report.csv
