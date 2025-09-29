@@ -138,6 +138,19 @@ jobs:
          filePath: tmp/licence-reports/licence-report.csv
          destinationDir: ris-reports/licence-reports/backend/ris-pdf-printservice
 
+       # Test report
+      - name: Test report - Download
+        uses: actions/download-artifact@abefc31eafcfbdf6c5336127c1346fdae79ff41c
+        with:
+          name: test-reports
+          path: tmp/test-reports
+      - name: Test report - git add report
+        uses: digitalservicebund/add-ris-report@c6c8735d23295c36a271c75e7dedc9b6b9a9ef5e
+        with:
+          filePath: tmp/test-reports
+          destinationDir: ris-reports/test-reports/ris-pdf-printservice/tests
+          reportIsDirectory: true
+
       - name: Push reports
         run: |
           git diff-index --cached --quiet HEAD ||

@@ -10,6 +10,6 @@ fileignoreconfig:
   - filename: .github/workflows/deploy-staging-job.yml
     checksum: 4d9dd73ad6fc238280d4353da72ee86110c80cbe7b64124bb6791ac529a9c4c7
   - filename: .github/workflows/pipeline.yml
-    checksum: 0535f882e916404efe9b770c5cc31384bb1f06c8b1ba2b0774eea2f6c3a7cc74
+    checksum: 8e2c0ab53531d5c67fec1fbd6bf8145b9aa14fc1d4a9f517d814426a04ebb63c
   - filename: tests/fixtures/attachment.pdf
     checksum: 567f6fe74abcd96d4f21be5b6dd7a9ae9364bbee188bb4e980981396da909554
