@@ -83,3 +83,54 @@ jobs:
           fetch-depth: 0
       - name: Detect secrets in incoming commits with Talisman
         uses: digitalservicebund/talisman-secrets-scan-action@4b8d640c2c021604455091d1068edfd627da20c1
+
+  push-reports:
+    runs-on: ubuntu-latest
+    env:
+      REPORTS_REPOSITORY: digitalservicebund/ris-reports
+    needs:
+      - backend-jobs
+    if: ${{ github.ref == 'refs/heads/main' }}
+    steps:
+      # Collect ADRs
+      - name: ADRs - Checkout ris-pdf-printservice repository
+        uses: actions/checkout@v5
+        with:
+          path: ris-pdf-printservice
+      - name: ADRs - Copy to temp folder
+        run: |
+          mkdir -p tmp/adr-source
+          find ris-pdf-printservice/doc/adr/ -type f ! -name '0000-template.md' -exec cp {} tmp/adr-source/ \;
+          ls -l tmp/adr-source
+
+      # Checkout reports repo
+      - uses: actions/checkout@v5
+        with:
+          repository: ${{ env.REPORTS_REPOSITORY }}
+          ssh-key: ${{ secrets.REPORTS_DEPLOY_KEY }}
+          path: ris-reports
+      - name: Setup git
+        run: |
+          git config user.name "${{ github.repository }}"
+          # This email identifies the commit as GitHub Actions - see https://github.com/orgs/community/discussions/26560
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        working-directory: ris-reports
+
+      # ADRs
+      - name: ADRs - add to report
+        uses: digitalservicebund/add-ris-report@c6c8735d23295c36a271c75e7dedc9b6b9a9ef5e
+        with:
+          filePath: tmp/adr-source
+          destinationDir: ris-reports/adr/ris-pdf-printservice
+          reportIsDirectory: true
+          keepAllVersions: false # don't need the timestamped snapshots of the whole folder
+
+      - name: Push reports
+        run: |
+          git diff-index --cached --quiet HEAD ||
+            git commit \
+              -m ${{ toJSON(github.event.head_commit.message) }} \
+              -m "From commit: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}" &&
+            git push origin main &&
+            echo "Pushed reports to ${{ github.server_url }}/${{ env.REPORTS_REPOSITORY }}" >> $GITHUB_STEP_SUMMARY
+        working-directory: ris-reports
