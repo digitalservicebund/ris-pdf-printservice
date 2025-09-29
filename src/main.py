@@ -2,7 +2,7 @@ import os
 from io import BytesIO
 from typing import Annotated
 
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, BackgroundTasks
 from weasyprint import HTML, CSS
 from styles import default_css, font_config
 import logging.config
@@ -69,8 +69,9 @@ with open(os.path.join(os.path.dirname(__file__), "fallback.png"), "rb") as file
 def generate_pdf(
         html: Annotated[UploadFile, File(description="The HTML that should be rendered")],
         css: Annotated[UploadFile, File(description="The CSS that should be applied to the HTML for rendering it")],
+        background_tasks: BackgroundTasks,
         attachments: Annotated[list[UploadFile], File(description="Additional PDF-files that should be added to the end of the created PDF-file. If these files are not PDF-A/2a compliant the created PDF-file will not be compliant either.") ] = None,
-        files: Annotated[list[UploadFile], File(description="Files references in the HTML that are needed for rendering. E.g. Images that are used in an <img>-tag. The filename must be the same as in the reference, the rest of the path is ignored.") ] = None
+        files: Annotated[list[UploadFile], File(description="Files references in the HTML that are needed for rendering. E.g. Images that are used in an <img>-tag. The filename must be the same as in the reference, the rest of the path is ignored.") ] = None,
 ) -> FileResponse:
     def url_fetcher(url: str) -> dict[str, str]:
         for file in files:
@@ -112,6 +113,8 @@ def generate_pdf(
             ppdf.pages.extend(attachment_pikepdf.pages)
 
     _, path = tempfile.mkstemp()
+    background_tasks.add_task(os.remove, path)
+
     ppdf.save(path)
+
     return FileResponse(path, media_type="application/pdf", filename="download.pdf", content_disposition_type="attachment")
-    # todo: cleanup temp file
