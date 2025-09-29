@@ -50,7 +50,7 @@ jobs:
       - name: Install project
         run: uv sync --all-extras
       - name: Run license check
-        run:  uv run licensecheck --requirements-paths "pyproject.toml" --zero --format csv --file "license-report.csv"
+        run:  uv run licensecheck --requirements-paths "pyproject.toml" --zero --format csv --file "licence-report.csv"
       - name: Upload licence report
         uses: actions/upload-artifact@v4
         with:
