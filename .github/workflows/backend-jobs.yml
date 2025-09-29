@@ -49,8 +49,10 @@ jobs:
           save-cache: ${{ github.ref == 'refs/heads/main' }}
       - name: Install project
         run: uv sync --all-extras
+      - name: Debug
+        run: ls -la
       - name: Run license check
-        run:  uv run licensecheck --zero --format json --file "license-report.csv"
+        run:  uv run licensecheck --zero --format json --requirements-paths "pyproject.toml" --file "license-report.csv"
       - name: Upload licence report
         uses: actions/upload-artifact@v4
         with:
