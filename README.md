@@ -86,6 +86,10 @@ Run formatter
 uv run black ./src
 ```
 
+## Contributing
+
+If you would like to contribute, check out [`CONTRIBUTING.md`](./CONTRIBUTING.md). Please also consider our [Code of Conduct](./CODE_OF_CONDUCT.md).
+
 ## Documentation
 
 - 🔒 [OpenAPI docs](https://pdf-service.ris.dev.ds4g.net/docs) or while the application is running locally under  http://localhost:8080/docs
