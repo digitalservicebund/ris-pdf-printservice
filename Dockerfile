@@ -1,57 +1,32 @@
-FROM cgr.dev/chainguard/wolfi-base AS build
+FROM cgr.dev/chainguard/python:latest-dev AS build
 
+USER root
 WORKDIR /app
 
-# Install system libs needed at runtime (Pango stack). Do this in both build and final.
-RUN apk update && apk add --no-cache --update-cache \
-    python-3.12 \
-    py3.12-pip \
-    pango \
-    fontconfig \
-    freetype \
-    cairo \
-    cairo-gobject \
-    harfbuzz \
-    curl \
-    ca-certificates
-
-# Set up a venv to isolate installed dependencies
-RUN python -m venv /app/.venv
-ENV PATH="/app/.venv/bin:${PATH}"
+# Install system libs needed at runtime
+RUN apk update && apk add --no-cache --update-cache pango
 
 COPY pyproject.toml ./
 COPY uv.lock ./
 
-ADD https://astral.sh/uv/install.sh /uv-installer.sh
-RUN sh /uv-installer.sh && rm /uv-installer.sh
-ENV PATH="/root/.local/bin/:$PATH"
+# Install python dependencies to .venv
+RUN uv sync --locked --compile-bytecode --no-editable
 
-RUN uv pip install --no-cache -r <(uv pip compile pyproject.toml)
+FROM cgr.dev/chainguard/python:latest AS runtime
+WORKDIR /app
 
-FROM cgr.dev/chainguard/wolfi-base AS runtime
-WORKDIR /src
+# Copy libraries (this way we do not need to have apk in the image). It only works because the files from pango we need
+# are all in the lib folder and both images use the same underlying OS.
+COPY --from=build /usr/lib /usr/lib
+# Copy python dependencies
+COPY --from=build --chown=nonroot /app/.venv /app/.venv
 
-# Install the same system libs required at runtime
-RUN apk update && apk add --no-cache --update-cache \
-    python-3.12 \
-    py3.12-pip \
-    pango \
-    fontconfig \
-    freetype \
-    cairo \
-    cairo-gobject \
-    harfbuzz
-
-RUN mkdir -p /tmp && chmod 1777 /tmp
-
-USER nonroot
-
-COPY --from=build /app/.venv /src/.venv
-ENV PATH="/src/.venv/bin:${PATH}"
+ENV PATH="/app/.venv/bin:${PATH}"
 
 COPY ./src ./src
 COPY ./static ./static
 
 EXPOSE 8080
 
-CMD ["python", "-m", "fastapi", "run", "src/main.py", "--host", "0.0.0.0", "--port", "8080"]
+ENTRYPOINT ["python", "-m", "fastapi"]
+CMD ["run", "src/main.py", "--port", "8080", "--host", "0.0.0.0"]
