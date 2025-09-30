@@ -4,6 +4,8 @@ Weasyprint does not support all CSS features a browser might support and also su
 CSS-Specifications not yet supported by major browsers.
 This leads to some incompatibilities between weasyprint and tailwind.
 
+An example setup for how to use tailwind with weasyprint can be seen in [/example/tailwind-css](../example/tailwind-css)
+
 ## Weasyprint does not support some selectors
 
 Most notably simply compiling the tailwind css to css creates some css rules that weasyprint ignores as they include
