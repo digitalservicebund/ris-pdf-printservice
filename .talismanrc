@@ -6,10 +6,7 @@ allowed_patterns:
   - hash\ =\ "sha256:[a-fA-F0-9]{40}"
   - sha256:[a-fA-F0-9]{64}
   - https:\/\/files\.pythonhosted\.org\/packages\/[0-9a-f]{2}\/[0-9a-f]{2}\/[0-9a-f]{32}.*
+  - uses:\ ([A-z0-9\-]+\/)*[A-z0-9\-]+@[a-fA-F0-9]{40}
 fileignoreconfig:
-  - filename: .github/workflows/deploy-staging-job.yml
-    checksum: 4d9dd73ad6fc238280d4353da72ee86110c80cbe7b64124bb6791ac529a9c4c7
-  - filename: .github/workflows/pipeline.yml
-    checksum: 8e2c0ab53531d5c67fec1fbd6bf8145b9aa14fc1d4a9f517d814426a04ebb63c
   - filename: tests/fixtures/attachment.pdf
     checksum: 567f6fe74abcd96d4f21be5b6dd7a9ae9364bbee188bb4e980981396da909554
