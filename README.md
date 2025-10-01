@@ -95,4 +95,4 @@ If you would like to contribute, check out [`CONTRIBUTING.md`](./CONTRIBUTING.md
 - 🔒 [OpenAPI docs](https://pdf-service.ris.dev.ds4g.net/docs) or while the application is running locally under  http://localhost:8080/docs
 - [How to use weasyprint with tailwind](./doc/how-to-use-weasyprint-with-tailwind.md)
 - [Accessibility](./doc/accessibility.md)
-- [PDF/A Conformance](./doc/accessibility.md)
+- [PDF/A Conformance](./doc/adr/0002-pdf-variant.md)
