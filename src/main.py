@@ -1,3 +1,4 @@
+import gc
 import os
 from io import BytesIO
 from typing import Annotated
@@ -114,5 +115,9 @@ def generate_pdf(
     background_tasks.add_task(os.remove, path)
 
     ppdf.save(path)
+
+    # Manually run garbage collection, it is otherwise not necessarily run after creating files and then the memory is
+    # not freed again
+    gc.collect()
 
     return FileResponse(path, media_type="application/pdf", filename="download.pdf", content_disposition_type="attachment")
