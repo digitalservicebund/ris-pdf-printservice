@@ -53,11 +53,7 @@ app = FastAPI(
 )
 app.mount("/.well-known", StaticFiles(directory="static/.well-known"), name=".well-known")
 
-instrumentator = Instrumentator().instrument(app)
-
-@app.on_event("startup")
-async def _startup():
-    instrumentator.expose(app)
+Instrumentator().instrument(app).expose(app)
 
 @app.get("/health")
 def health():
