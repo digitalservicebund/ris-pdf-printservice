@@ -127,7 +127,7 @@ jobs:
 
       # Licence reports
       - name: Licence report - Download
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: licence-reports
           path: tmp/licence-reports/
@@ -140,7 +140,7 @@ jobs:
 
        # Test report
       - name: Test report - Download
-        uses: actions/download-artifact@abefc31eafcfbdf6c5336127c1346fdae79ff41c
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53
         with:
           name: test-reports
           path: tmp/test-reports
