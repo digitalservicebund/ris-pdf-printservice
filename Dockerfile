@@ -4,13 +4,15 @@ USER root
 WORKDIR /app
 
 # Install system libs needed at runtime
-RUN apk update && apk add --no-cache --update-cache pango
+RUN apk update && apk add --no-cache --update-cache "pango<1.90"
 
 COPY pyproject.toml ./
 COPY uv.lock ./
 
 # Install python dependencies to .venv
 RUN uv sync --locked --compile-bytecode --no-editable
+
+RUN ls /usr/lib
 
 FROM cgr.dev/chainguard/python:latest AS runtime
 WORKDIR /app
