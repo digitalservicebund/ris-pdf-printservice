@@ -10,6 +10,6 @@
     "tailwindcss": "^4.1.13"
   },
   "devDependencies": {
-    "vite": "~7.1.11"
+    "vite": "~7.2.4"
   }
 }
