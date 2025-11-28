@@ -6,11 +6,13 @@ updates:
     directory: "/example/tailwind-css"
     schedule:
       interval: "daily"
-    # Too much noise with patch releases...
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-patch"]
+    cooldown:
+      default-days: 3
     groups:
+      all-example-tailwind-css-non-major-dependencies:
+        update-types:
+          - minor
+          - patch
       typescript-eslint:
         patterns:
           - "@typescript-eslint/*"
@@ -18,23 +20,22 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    # Too much noise with patch releases...
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-patch"]
+    cooldown:
+      default-days: 3
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "daily"
-    # Too much noise with patch releases...
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-patch"]
+    cooldown:
+      default-days: 3
   - package-ecosystem: "uv"
     directory: "/"
     schedule:
       interval: "daily"
-    # Too much noise with patch releases...
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-patch"]
+    cooldown:
+      default-days: 3
+    groups:
+      all-python-non-major-dependencies:
+        update-types:
+          - minor
+          - patch
