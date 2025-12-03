@@ -11,7 +11,7 @@ requires-python = ">=3.13"
 license = "GPL-3.0"
 dependencies = [
   "black>=25.1.0",
-  "fastapi[standard]==0.121.3",
+  "fastapi[standard]==0.123.0",
   "flake8>=7.3.0",
   "weasyprint==66.0",
   "pikepdf==10.0.2",
