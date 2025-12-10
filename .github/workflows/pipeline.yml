@@ -78,7 +78,7 @@ jobs:
     # Running on main only https://digitalservicebund.slack.com/archives/C046VD44ZEH/p1706516240974409
     if: ${{ github.ref == 'refs/heads/main' }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Detect secrets in incoming commits with Talisman
@@ -94,7 +94,7 @@ jobs:
     steps:
       # Collect ADRs
       - name: ADRs - Checkout ris-pdf-printservice repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: ris-pdf-printservice
       - name: ADRs - Copy to temp folder
@@ -104,7 +104,7 @@ jobs:
           ls -l tmp/adr-source
 
       # Checkout reports repo
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           repository: ${{ env.REPORTS_REPOSITORY }}
           ssh-key: ${{ secrets.REPORTS_DEPLOY_KEY }}
