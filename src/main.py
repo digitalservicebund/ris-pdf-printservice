@@ -87,14 +87,9 @@ def generate_pdf(
     )
     css = CSS(css.file, font_config=font_config, url_fetcher=url_fetcher)
 
-    pdf = html.write_pdf(stylesheets=[default_css, css], font_config=font_config, pdf_variant="pdf/a-2u", pdf_version="1.7", srgb=True, pdf_tags=True)
+    pdf = html.write_pdf(stylesheets=[default_css, css], font_config=font_config, pdf_variant="pdf/a-2a", pdf_version="1.7", srgb=True, pdf_tags=True)
 
     ppdf = pikepdf.open(BytesIO(pdf))
-
-    with ppdf.open_metadata() as meta:
-        meta['pdfaid:conformance'] = "A"
-        # We would need to also embedd the definition of the pdfuaid namespace into the pdf to still be PDF/A-2a compliant, thats not that simple so we do not do that at the moment
-        # meta['pdfuaid:part'] = "1"
 
     if attachments:
         for attachment in attachments:
