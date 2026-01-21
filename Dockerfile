@@ -1,10 +1,12 @@
-FROM cgr.dev/chainguard/python:latest-dev AS build
+FROM python:3.13-slim AS build
 
 USER root
 WORKDIR /app
 
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
 # Install system libs needed at runtime
-RUN apk update && apk add --no-cache --update-cache "pango<1.90"
+RUN apt-get update -y && apt-get install -y libpango-1.0-0 libpangoft2-1.0-0
 
 COPY pyproject.toml ./
 COPY uv.lock ./
@@ -12,14 +14,12 @@ COPY uv.lock ./
 # Install python dependencies to .venv
 RUN uv sync --locked --compile-bytecode --no-editable
 
-RUN ls /usr/lib
-
-FROM cgr.dev/chainguard/python:latest AS runtime
+FROM registry.opencode.de/open-code/oci/python3:3.13 AS runtime
 WORKDIR /app
 
-# Copy libraries (this way we do not need to have apk in the image). It only works because the files from pango we need
-# are all in the lib folder and both images use the same underlying OS.
-COPY --from=build /usr/lib /usr/lib
+# Copy libraries (this way we do not need to have apt-get in the image). It only works because the files from pango we
+# need are all in the lib folder and both images use the same underlying OS.
+COPY --from=build /usr/lib/aarch64-linux-gnu /usr/lib/aarch64-linux-gnu
 # Copy python dependencies
 COPY --from=build --chown=nonroot /app/.venv /app/.venv
 
