@@ -34,7 +34,7 @@ jobs:
       - name: Run tests
         run: uv run pytest -q --html=test-report/index.html
       - name: Upload test report
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
          name: test-reports
          retention-days: 3
@@ -58,7 +58,7 @@ jobs:
       - name: Run license check
         run:  uv run licensecheck --requirements-paths "pyproject.toml" --zero --format csv --file "licence-report.csv"
       - name: Upload licence report
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: licence-reports
           retention-days: 3
