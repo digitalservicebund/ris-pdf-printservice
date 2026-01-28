@@ -75,6 +75,16 @@ jobs:
         run: |
           mkdir /tmp/images
           docker save -o /tmp/images/fullstack-image.tar ${{ inputs.container-registry }}/${{ inputs.container-image-name }}:${{ inputs.container-image-version }}
+      - name: Install cosign
+        # Third-party action, pin to commit SHA!
+        # See [https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions](https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions)
+        uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # v4.0.0
+        with:
+          cosign-release: "v2.6.0"
+      - name: Sign the published Docker image
+        run: cosign sign --yes {{ inputs.container-registry }}/${{ inputs.container-image-name }}:${{ inputs.container-image-version }}
+      - name: Attest the vulnerability scan
+        run: cosign attest --yes --replace --predicate vuln.json --type vuln {{ inputs.container-registry }}/${{ inputs.container-image-name }}:${{ inputs.container-image-version }}
       - uses: actions/cache@v5
         with:
           path: /tmp/images
