@@ -82,9 +82,9 @@ jobs:
         with:
           cosign-release: "v2.6.0"
       - name: Sign the published Docker image
-        run: cosign sign --yes {{ inputs.container-registry }}/${{ inputs.container-image-name }}:${{ inputs.container-image-version }}
+        run: cosign sign --yes ${{ inputs.container-registry }}/${{ inputs.container-image-name }}:${{ inputs.container-image-version }}
       - name: Attest the vulnerability scan
-        run: cosign attest --yes --replace --predicate vuln.json --type vuln {{ inputs.container-registry }}/${{ inputs.container-image-name }}:${{ inputs.container-image-version }}
+        run: cosign attest --yes --replace --predicate vuln.json --type vuln ${{ inputs.container-registry }}/${{ inputs.container-image-name }}:${{ inputs.container-image-version }}
       - uses: actions/cache@v5
         with:
           path: /tmp/images
