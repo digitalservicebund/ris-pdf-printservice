@@ -11,9 +11,8 @@ jobs:
     permissions:
       id-token: write # Enable OIDC for gitsign
     steps:
-      - uses: chainguard-dev/actions/setup-gitsign@18e5e3427cf9d6bcfbefe60dca48e40292f000c5
       - name: Deploy new images
-        uses: digitalservicebund/argocd-deploy@4e758f584953506c571951ffcba33d6a6246e856 # v1.0.0
+        uses: digitalservicebund/argocd-deploy@auth-token
         with:
           environment: staging
           version: ${{ github.sha }}
@@ -22,8 +21,8 @@ jobs:
           github_app_private_key: ${{ secrets.GITOPS_NEURIS_APP_PRIVATE_KEY }}
           github_app_id: ${{ secrets.GITOPS_NEURIS_APP_ID }}
           app: ris-pdf-printservice-staging
-          argocd_pipeline_password: ${{ secrets.ARGOCD_PIPELINE_PASSWORD }}
-          argocd_server: ${{ secrets.ARGOCD_SERVER }}
+          argocd_auth_token: ${{ secrets.ARGOCD_AUTH_TOKEN }}
+          argocd_server: ${{ secrets.ARGOCD_SERVER_STACKIT }}
       - name: Track deploy
         continue-on-error: true
         uses: digitalservicebund/track-deployment@5a2815e150e1268983aac5ca04c8c046ed1b614a # v1.0.0
