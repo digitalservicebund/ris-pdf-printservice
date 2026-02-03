@@ -14,7 +14,7 @@ dependencies = [
   "fastapi[standard]==0.128.0",
   "flake8>=7.3.0",
   "weasyprint==68.0",
-  "pikepdf==10.2.0",
+  "pikepdf==10.3.0",
   "python-multipart==0.0.22",
   "prometheus-fastapi-instrumentator>=7.1.0",
 ]
