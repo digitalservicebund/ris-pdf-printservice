@@ -14,14 +14,12 @@ COPY uv.lock ./
 # Install python dependencies to .venv
 RUN uv sync --locked --compile-bytecode --no-editable
 
-FROM registry.opencode.de/open-code/oci/python3:3.13 AS runtime
+FROM registry.opencode.de/open-code/oci/python3:3.13-oc.6-minimal AS runtime
 WORKDIR /app
 
 ARG TARGETPLATFORM
 ENV LIB_FOLDER=${TARGETPLATFORM/linux\/amd64/x86_64-linux-gnu}
 ENV LIB_FOLDER=${LIB_FOLDER/linux\/arm64/aarch64-linux-gnu}
-
-RUN echo "Targeting $TARGETPLATFORM using libs from /usr/lib/$LIB_FOLDER"
 
 # Copy libraries (this way we do not need to have apt-get in the image). It only works because the files from pango we
 # need are all in the lib folder and both images use the same underlying OS.
