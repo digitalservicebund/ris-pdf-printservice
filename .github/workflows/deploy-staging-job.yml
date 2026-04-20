@@ -12,7 +12,7 @@ jobs:
       id-token: write # Enable OIDC for gitsign
     steps:
       - name: Deploy new images
-        uses: digitalservicebund/argocd-deploy@auth-token
+        uses: digitalservicebund/argocd-deploy@6033da861398e0d7fcffe1b195f8d58f10b62c4e # auth-token branch
         with:
           environment: staging
           version: ${{ github.sha }}

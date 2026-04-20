@@ -80,11 +80,11 @@ jobs:
     # Running on main only https://digitalservicebund.slack.com/archives/C046VD44ZEH/p1706516240974409
     if: ${{ github.ref == 'refs/heads/main' }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 0
       - name: Detect secrets in incoming commits with Talisman
-        uses: digitalservicebund/talisman-secrets-scan-action@1789b188ee3a1361fffd2edd4bc12ac0df0a23c1
+        uses: digitalservicebund/talisman-secrets-scan-action@dd7513defb21028835988b40e89f7d10b3f66ed5
 
   push-reports:
     runs-on: ubuntu-latest
@@ -96,7 +96,7 @@ jobs:
     steps:
       # Collect ADRs
       - name: ADRs - Checkout ris-pdf-printservice repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           path: ris-pdf-printservice
       - name: ADRs - Copy to temp folder
@@ -106,7 +106,7 @@ jobs:
           ls -l tmp/adr-source
 
       # Checkout reports repo
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           repository: ${{ env.REPORTS_REPOSITORY }}
           ssh-key: ${{ secrets.REPORTS_DEPLOY_KEY }}
@@ -129,7 +129,7 @@ jobs:
 
       # Licence reports
       - name: Licence report - Download
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: licence-reports
           path: tmp/licence-reports/
