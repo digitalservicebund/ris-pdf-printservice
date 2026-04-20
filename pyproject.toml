@@ -11,11 +11,11 @@ requires-python = ">=3.13"
 license = "GPL-3.0"
 dependencies = [
   "black>=25.1.0",
-  "fastapi[standard]==0.135.2",
+  "fastapi[standard]==0.136.0",
   "flake8>=7.3.0",
   "weasyprint==68.1",
   "pikepdf==10.5.1",
-  "python-multipart==0.0.22",
+  "python-multipart==0.0.26",
   "prometheus-fastapi-instrumentator>=7.1.0",
 ]
 
@@ -25,7 +25,7 @@ build-backend = "setuptools.build_meta"
 
 [dependency-groups]
 dev = [
-    "pytest>=8.4.2",
+    "pytest>=9.0.3",
     "licensecheck==2025.1.0",
     "pytest-html==4.2.0"
 ]
