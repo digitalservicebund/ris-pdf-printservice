@@ -5,11 +5,11 @@
   },
   "private": true,
   "dependencies": {
-    "@digitalservicebund/ris-ui": "^4.0.0",
+    "@digitalservicebund/ris-ui": "^4.1.1",
     "@tailwindcss/postcss": "^4.2.4",
     "tailwindcss": "^4.1.13"
   },
   "devDependencies": {
-    "vite": "~8.0.9"
+    "vite": "~8.0.10"
   }
 }
