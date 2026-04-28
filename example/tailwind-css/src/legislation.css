@@ -314,31 +314,41 @@ hr.trennlinie {
 h2 { string-set: article content() }
 
 @page {
-  @top-left {
-    @apply text-xs mt-[10px];
-    vertical-align: top;
-    content: string(amtliche-abkuerzung) " - " string(article)
-  }
-  @top-right {
-    @apply text-xs mt-[10px];
-    vertical-align: top;
-    content: "rechtsinformationen.bund.de"
-  }
-  @bottom-center {
+  @bottom-left {
     @apply text-sm;
-    content: "Seite " counter(page) " von " counter(pages)
+    content: string(amtliche-abkuerzung)
+  }
+  @bottom-right {
+    @apply text-sm;
+    content: counter(page) " von " counter(pages)
   }
 }
 
-@page :nth(1) {
-  @top-left {
-    content: "";
-  }
+/* Take the header out of the flow and assign it to the 'header-content' slot */
+#header-page-1-right {
+  @apply w-[100px] mt-10;
+  position: running(header-content-page-1-right);
+  text-align: right;
+}
+
+#header-page-1-left {
+  @apply w-[160px] mt-10;
+  margin-left: -50px;
+  max-width: 160px;
+  position: running(header-content-page-1-left);
+  text-align: left;
+}
+
+@page :first {
   @top-right {
-    @apply text-xs w-[350px];
-    content: "rechtsinformationen.bund.de - ein Service des Bundesministeriums der Justiz und für Verbraucherschutz"
+    content: element(header-content-page-1-right);
+  }
+  @top-left {
+    content: element(header-content-page-1-left);
   }
 }
+
+
 
 /*article {
   display: flex;
@@ -353,6 +363,7 @@ h2 { string-set: article content() }
   }
 }
 */
+/*
 .fussnote > p {
   float: footnote;
   footnote-display: block;
@@ -366,4 +377,4 @@ h2 { string-set: article content() }
 ::footnote-marker {
   content: "";
 }
-
+*/
