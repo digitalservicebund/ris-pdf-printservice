@@ -79,6 +79,8 @@ jobs:
     runs-on: ubuntu-latest
     # Running on main only https://digitalservicebund.slack.com/archives/C046VD44ZEH/p1706516240974409
     if: ${{ github.ref == 'refs/heads/main' }}
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
@@ -93,6 +95,8 @@ jobs:
     needs:
       - backend-jobs
     if: ${{ github.ref == 'refs/heads/main' }}
+    permissions:
+      contents: read
     steps:
       # Collect ADRs
       - name: ADRs - Checkout ris-pdf-printservice repository
