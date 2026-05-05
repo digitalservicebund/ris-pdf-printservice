@@ -109,27 +109,16 @@ jobs:
           find ris-pdf-printservice/doc/adr/ -type f ! -name '0000-template.md' -exec cp {} tmp/adr-source/ \;
           ls -l tmp/adr-source
 
-      # Checkout reports repo
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-        with:
-          repository: ${{ env.REPORTS_REPOSITORY }}
-          ssh-key: ${{ secrets.REPORTS_DEPLOY_KEY }}
-          path: ris-reports
-      - name: Setup git
-        run: |
-          git config user.name "${{ github.repository }}"
-          # This email identifies the commit as GitHub Actions - see https://github.com/orgs/community/discussions/26560
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        working-directory: ris-reports
-
       # ADRs
       - name: ADRs - git add report
-        uses: digitalservicebund/add-ris-report@c6c8735d23295c36a271c75e7dedc9b6b9a9ef5e
+        uses: digitalservicebund/add-ris-report@3fafb0fb08714549c748eb44ac69d2099c7cbb47
         with:
           filePath: tmp/adr-source
           destinationDir: ris-reports/adr/ris-pdf-printservice
           reportIsDirectory: true
           keepAllVersions: false # don't need the timestamped snapshots of the whole folder
+          BUCKET_ACCESS_KEY_ID: ${{ secrets.REPORTS_BUCKET_ACCESS_KEY_ID }}
+          BUCKET_SECRET_ACCESS_KEY: ${{ secrets.REPORTS_BUCKET_SECRET_ACCESS_KEY }}
 
       # Licence reports
       - name: Licence report - Download
@@ -139,10 +128,12 @@ jobs:
           path: tmp/licence-reports/
           merge-multiple: true
       - name: Licence report - git add report
-        uses: digitalservicebund/add-ris-report@c6c8735d23295c36a271c75e7dedc9b6b9a9ef5e
+        uses: digitalservicebund/add-ris-report@3fafb0fb08714549c748eb44ac69d2099c7cbb47
         with:
          filePath: tmp/licence-reports/licence-report.csv
          destinationDir: ris-reports/licence-reports/backend/ris-pdf-printservice
+         BUCKET_ACCESS_KEY_ID: ${{ secrets.REPORTS_BUCKET_ACCESS_KEY_ID }}
+         BUCKET_SECRET_ACCESS_KEY: ${{ secrets.REPORTS_BUCKET_SECRET_ACCESS_KEY }}
 
        # Test report
       - name: Test report - Download
@@ -151,18 +142,10 @@ jobs:
           name: test-reports
           path: tmp/test-reports
       - name: Test report - git add report
-        uses: digitalservicebund/add-ris-report@c6c8735d23295c36a271c75e7dedc9b6b9a9ef5e
+        uses: digitalservicebund/add-ris-report@3fafb0fb08714549c748eb44ac69d2099c7cbb47
         with:
           filePath: tmp/test-reports
           destinationDir: ris-reports/test-reports/ris-pdf-printservice/tests
           reportIsDirectory: true
-
-      - name: Push reports
-        run: |
-          git diff-index --cached --quiet HEAD ||
-            git commit \
-              -m ${{ toJSON(github.event.head_commit.message) }} \
-              -m "From commit: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}" &&
-            git push origin main &&
-            echo "Pushed reports to ${{ github.server_url }}/${{ env.REPORTS_REPOSITORY }}" >> $GITHUB_STEP_SUMMARY
-        working-directory: ris-reports
+          BUCKET_ACCESS_KEY_ID: ${{ secrets.REPORTS_BUCKET_ACCESS_KEY_ID }}
+          BUCKET_SECRET_ACCESS_KEY: ${{ secrets.REPORTS_BUCKET_SECRET_ACCESS_KEY }}
