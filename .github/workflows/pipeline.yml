@@ -114,7 +114,7 @@ jobs:
         uses: digitalservicebund/add-ris-report@3fafb0fb08714549c748eb44ac69d2099c7cbb47
         with:
           filePath: tmp/adr-source
-          destinationDir: ris-reports/adr/ris-pdf-printservice
+          destinationDir: adr/ris-pdf-printservice
           reportIsDirectory: true
           keepAllVersions: false # don't need the timestamped snapshots of the whole folder
           BUCKET_ACCESS_KEY_ID: ${{ secrets.REPORTS_BUCKET_ACCESS_KEY_ID }}
@@ -131,7 +131,7 @@ jobs:
         uses: digitalservicebund/add-ris-report@3fafb0fb08714549c748eb44ac69d2099c7cbb47
         with:
          filePath: tmp/licence-reports/licence-report.csv
-         destinationDir: ris-reports/licence-reports/backend/ris-pdf-printservice
+         destinationDir: licence-reports/backend/ris-pdf-printservice
          BUCKET_ACCESS_KEY_ID: ${{ secrets.REPORTS_BUCKET_ACCESS_KEY_ID }}
          BUCKET_SECRET_ACCESS_KEY: ${{ secrets.REPORTS_BUCKET_SECRET_ACCESS_KEY }}
 
@@ -145,7 +145,7 @@ jobs:
         uses: digitalservicebund/add-ris-report@3fafb0fb08714549c748eb44ac69d2099c7cbb47
         with:
           filePath: tmp/test-reports
-          destinationDir: ris-reports/test-reports/ris-pdf-printservice/tests
+          destinationDir: test-reports/ris-pdf-printservice/tests
           reportIsDirectory: true
           BUCKET_ACCESS_KEY_ID: ${{ secrets.REPORTS_BUCKET_ACCESS_KEY_ID }}
           BUCKET_SECRET_ACCESS_KEY: ${{ secrets.REPORTS_BUCKET_SECRET_ACCESS_KEY }}
