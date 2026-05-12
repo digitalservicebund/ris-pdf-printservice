@@ -1,0 +1,2 @@
+# dependency of uv, but not affected: https://github.com/astral-sh/uv/issues/19236
+GHSA-82j2-j2ch-gfr8
