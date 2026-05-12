@@ -14,7 +14,7 @@ COPY uv.lock ./
 # Install python dependencies to .venv
 RUN uv sync --locked --compile-bytecode --no-editable
 
-FROM registry.opencode.de/open-code/oci/python3:3.13-oc.6-minimal AS runtime
+FROM registry.opencode.de/oci-community/images/zendis/python3:3.13-minimal AS runtime
 WORKDIR /app
 
 ARG TARGETPLATFORM
