@@ -10,12 +10,12 @@ version = "0.1.0"
 requires-python = ">=3.13"
 license = "GPL-3.0"
 dependencies = [
-  "black>=25.1.0",
+  "black>=26.5.0",
   "fastapi[standard]==0.136.1",
   "flake8>=7.3.0",
   "weasyprint==68.1",
-  "pikepdf==10.5.1",
-  "python-multipart==0.0.28",
+  "pikepdf==10.6.0",
+  "python-multipart==0.0.29",
   "prometheus-fastapi-instrumentator>=7.1.0",
 ]
 
