@@ -16,7 +16,7 @@ dependencies = [
   "weasyprint==68.1",
   "pikepdf==10.7.2",
   "python-multipart==0.0.30",
-  "prometheus-fastapi-instrumentator>=7.1.0",
+  "prometheus-fastapi-instrumentator>=8.0.0",
 ]
 
 [build-system]
