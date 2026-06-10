@@ -3,8 +3,6 @@ FROM cgr.dev/chainguard/python@sha256:eaac683e334f7e63235fd3931e24366f7e1a66b963
 USER root
 WORKDIR /app
 
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
-
 # Install system libs needed at runtime
 RUN apk update && apk add pango
 
