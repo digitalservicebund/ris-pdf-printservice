@@ -16,20 +16,20 @@ jobs:
       - name: bump python image
         uses: digitalservicebund/bump-chainguard-digest@937cc7a12750bfd06419f32cabcaa79a37f32705
         with:
-          image_name: python:last
+          image_name: python:latest
           file_path: Dockerfile
           github_token: ${{ github.token }}
           branch: 'bump-python-image'
       - name: bump python-dev image
         uses: digitalservicebund/bump-chainguard-digest@937cc7a12750bfd06419f32cabcaa79a37f32705
         with:
-          image_name: python:last-dev
+          image_name: python:latest-dev
           file_path: Dockerfile
           github_token: ${{ github.token }}
           branch: 'bump-python-dev-image'
-      - name: Send status to Slack
-        uses: digitalservicebund/notify-on-failure-gha@671832f192aee0a068fd92b2f6deb975df794a84 #v1.6.1
-        if: ${{ failure() }}
-        with:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          SLACK_CHANNEL_ID: ${{ vars.SLACK_CHANNEL_ID }}
+#      - name: Send status to Slack
+#        uses: digitalservicebund/notify-on-failure-gha@671832f192aee0a068fd92b2f6deb975df794a84 #v1.6.1
+#        if: ${{ failure() }}
+#        with:
+#          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+#          SLACK_CHANNEL_ID: ${{ vars.SLACK_CHANNEL_ID }}
