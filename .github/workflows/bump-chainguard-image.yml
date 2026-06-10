@@ -14,14 +14,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: bump python image
-        uses: digitalservicebund/bump-chainguard-digest@937cc7a12750bfd06419f32cabcaa79a37f32705
+        uses: digitalservicebund/bump-chainguard-digest@4a81196c94ada7ab6841a963e62b9a4103070575
         with:
-          image_name: python:latest
+          image_name: python
           file_path: Dockerfile
           github_token: ${{ github.token }}
           branch: 'bump-python-image'
       - name: bump python-dev image
-        uses: digitalservicebund/bump-chainguard-digest@937cc7a12750bfd06419f32cabcaa79a37f32705
+        uses: digitalservicebund/bump-chainguard-digest@4a81196c94ada7ab6841a963e62b9a4103070575
         with:
           image_name: python:latest-dev
           file_path: Dockerfile
