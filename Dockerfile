@@ -1,4 +1,4 @@
-FROM python:3.13-slim AS build
+FROM cgr.dev/chainguard/python@sha256:eaac683e334f7e63235fd3931e24366f7e1a66b963a36e17e20a0da9aaa59108 AS build
 
 USER root
 WORKDIR /app
@@ -6,7 +6,7 @@ WORKDIR /app
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 # Install system libs needed at runtime
-RUN apt-get update -y && apt-get install -y libpango-1.0-0 libpangoft2-1.0-0
+RUN apk update && apk add pango
 
 COPY pyproject.toml ./
 COPY uv.lock ./
@@ -14,16 +14,14 @@ COPY uv.lock ./
 # Install python dependencies to .venv
 RUN uv sync --locked --compile-bytecode --no-editable
 
-FROM registry.opencode.de/oci-community/images/zendis/python3:3.13-minimal AS runtime
+FROM cgr.dev/chainguard/python@sha256:017628f56563a770f0bb772164884c40047e0cec52caee3356689b1c212ff2b5 AS runtime
 WORKDIR /app
 
-ARG TARGETPLATFORM
-ENV LIB_FOLDER=${TARGETPLATFORM/linux\/amd64/x86_64-linux-gnu}
-ENV LIB_FOLDER=${LIB_FOLDER/linux\/arm64/aarch64-linux-gnu}
+# Copy libraries from build stage.
+COPY --from=build /usr/lib/lib* /usr/lib/
+COPY --from=build /lib/lib* /lib/
+COPY --from=build /etc/fonts /etc/fonts
 
-# Copy libraries (this way we do not need to have apt-get in the image). It only works because the files from pango we
-# need are all in the lib folder and both images use the same underlying OS.
-COPY --from=build /usr/lib/${LIB_FOLDER} /usr/lib/${LIB_FOLDER}
 # Copy python dependencies
 COPY --from=build --chown=nonroot /app/.venv /app/.venv
 
