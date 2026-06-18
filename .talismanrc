@@ -10,3 +10,13 @@ allowed_patterns:
 fileignoreconfig:
   - filename: tests/fixtures/attachment.pdf
     checksum: 567f6fe74abcd96d4f21be5b6dd7a9ae9364bbee188bb4e980981396da909554
+  - filename: .talismanrc
+    ignore_detectors:
+      - filecontent
+  - filename: .github/workflows/pipeline.yml
+    allowed_patterns:
+      - "secrets: inherit"
+      - secrets.REPORTS_BUCKET_ACCESS_KEY_ID
+      - secrets.REPORTS_BUCKET_SECRET_ACCESS_KEY
+      - BUCKET_ACCESS_KEY_ID
+      - BUCKET_SECRET_ACCESS_KEY
