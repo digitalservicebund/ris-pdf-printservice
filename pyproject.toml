@@ -28,7 +28,7 @@ build-backend = "setuptools.build_meta"
 [dependency-groups]
 dev = [
     "pytest>=9.1.0",
-    "licensecheck==2026.0.1",
+    "licensecheck==2026.0.3",
     "pytest-html==4.2.0"
 ]
 

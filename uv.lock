@@ -639,7 +639,7 @@ wheels = [
 
 [[package]]
 name = "licensecheck"
-version = "2026.0.1"
+version = "2026.0.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "appdirs" },
@@ -653,9 +653,9 @@ dependencies = [
     { name = "rich" },
     { name = "tomli" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/92/f5/f65077ae54c54e63a42e43388990c216820e6dd207cf743093a13908fb58/licensecheck-2026.0.1.tar.gz", hash = "sha256:70f536775698a120c7bf1e0e958b92cf4cbd7d00a4f8530582b77cb8939c6f5d", size = 64152, upload-time = "2026-06-12T22:35:36.136Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9e/7f/9def43c5ce6f3a5c72759c2c3ce7d54bf0d1f6ef7d0aa9e674071c0bb4b1/licensecheck-2026.0.3.tar.gz", hash = "sha256:b47c842da2792a9f75a7f6b8cb3b1d2ebf59eee33b1a903925fd17d3925ab6f4", size = 63025, upload-time = "2026-06-15T21:55:41.503Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ee/f7/27f23bc902804f493b8301647509f482c6318e5f5e69443e80c57e03f8ca/licensecheck-2026.0.1-py3-none-any.whl", hash = "sha256:c1af219811fcd443b650a9d58983002407b4084839ce0f89d8fd9e694ba3d0c5", size = 23062, upload-time = "2026-06-12T22:35:34.997Z" },
+    { url = "https://files.pythonhosted.org/packages/fc/47/ca6a65eda8a839d5d44381a7c8849489416c527dfc3094a72cb1d647aca3/licensecheck-2026.0.3-py3-none-any.whl", hash = "sha256:984575b02ed473ba9bb0931b03c114e8b7fad6ac3c3999967fa416753e804134", size = 24441, upload-time = "2026-06-15T21:55:40.095Z" },
 ]
 
 [[package]]
@@ -860,7 +860,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "licensecheck", specifier = "==2026.0.1" },
+    { name = "licensecheck", specifier = "==2026.0.3" },
     { name = "pytest", specifier = ">=9.1.0" },
     { name = "pytest-html", specifier = "==4.2.0" },
 ]
