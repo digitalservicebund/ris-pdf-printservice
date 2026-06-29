@@ -16,7 +16,7 @@ dependencies = [
   "weasyprint==69.0",
   "pikepdf==10.9.1",
   "python-multipart==0.0.32",
-  "prometheus-fastapi-instrumentator>=7.1.0",
+  "prometheus-fastapi-instrumentator>=8.0.2",
   # Fixes CVE-2026-54283, transient dependency of fastapi. Can be removed once fastapi releases a new version with the fix.
   "starlette>=1.3.1",
 ]
