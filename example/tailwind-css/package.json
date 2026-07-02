@@ -6,7 +6,7 @@
   "private": true,
   "dependencies": {
     "@digitalservicebund/ris-ui": "^4.6.0",
-    "@tailwindcss/postcss": "^4.3.1",
+    "@tailwindcss/postcss": "^4.3.2",
     "tailwindcss": "^4.1.13"
   },
   "devDependencies": {
