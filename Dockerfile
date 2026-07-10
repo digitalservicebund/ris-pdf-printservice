@@ -12,7 +12,7 @@ COPY uv.lock ./
 # Install python dependencies to .venv
 RUN uv sync --locked --compile-bytecode --no-editable
 
-FROM cgr.dev/chainguard/python@sha256:5d24c87a044aa2597e12d2788751f138460653fe88a638eb456dd6b9b6a5499e AS runtime
+FROM cgr.dev/chainguard/python@sha256:48b99516540c29b4e949f77dfce8d1c8de6036adcce64245bb350b507b6fc9fc AS runtime
 WORKDIR /app
 
 # Copy libraries from build stage.
