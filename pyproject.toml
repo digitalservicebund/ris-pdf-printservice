@@ -14,7 +14,7 @@ dependencies = [
   "fastapi[standard]==0.139.0",
   "flake8>=7.3.0",
   "weasyprint==69.0",
-  "pikepdf==10.9.1",
+  "pikepdf==10.10.0",
   "python-multipart==0.0.32",
   "prometheus-fastapi-instrumentator>=8.0.2",
   # Fixes CVE-2026-54283, transient dependency of fastapi. Can be removed once fastapi releases a new version with the fix.
