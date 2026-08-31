@@ -1,4 +1,8 @@
 # Pdf print service
+
+> [!IMPORTANT]  
+> We switchted to using https://github.com/SchweizerischeBundesbahnen/weasyprint-service. This repo is no longer maintained.
+
 Rest API service that converts HTML and CSS into high‑quality PDFs.
 
 ## Usage
